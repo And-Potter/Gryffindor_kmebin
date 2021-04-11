@@ -4,6 +4,7 @@
 * [Week1](#memo-Week1)
 
 </br>
+
 ## :memo: Week1
 :computer: ​**Level1**
 > SignInActivity.kt
@@ -13,8 +14,11 @@ binding.signUp.setOnClickListener {
 	startActivityForResult(intent, 111)
 }
 ```
+
 </br>
+
 > SignUpActivity.kt
+
 ```Kotlin
 binding.signUp.setOnClickListener {
 	...
@@ -38,4 +42,4 @@ binding.signUp.setOnClickListener {
 
 > Review
 
-시험 끝나고 얼른 코드 수정해야겠다.
+시험 끝나고 제대로 수정하기..
