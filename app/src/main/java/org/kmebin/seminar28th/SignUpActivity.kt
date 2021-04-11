@@ -1,8 +1,11 @@
 package org.kmebin.seminar28th
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import org.kmebin.seminar28th.databinding.ActivitySignUpBinding
 
 class SignUpActivity : AppCompatActivity() {
@@ -11,9 +14,27 @@ class SignUpActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("lifeCycle", "SignUp-onCreate")
 
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        configureNavigation()
+    }
+
+    private fun configureNavigation() {
+        binding.signUp.setOnClickListener {
+            if (binding.name.text.isEmpty() || binding.id.text.isEmpty() || binding.password.text.isEmpty()) {
+                Toast.makeText(this, "빈칸이 있는지 확인해주세요", Toast.LENGTH_SHORT).show()
+            } else {
+                val intent = Intent()
+                intent.putExtra("name", binding.name.text.toString())
+                intent.putExtra("id", binding.id.text.toString())
+                intent.putExtra("password", binding.password.text.toString())
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
+        }
     }
 
     override fun onStart() {
