@@ -1,5 +1,6 @@
 package org.kmebin.seminar28th.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import org.kmebin.seminar28th.adapter.RepositoryListAdapter
@@ -18,6 +19,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         configureRepositoryList()
+        configureNavigation()
     }
 
     private fun configureRepositoryList() {
@@ -44,5 +46,12 @@ class HomeActivity : AppCompatActivity() {
             )
         )
         repositoryListAdapter.notifyDataSetChanged()
+    }
+
+    private fun configureNavigation() {
+        binding.moreBtn.setOnClickListener {
+            val intent = Intent(this, UserInfoActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
