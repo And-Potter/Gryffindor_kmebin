@@ -1,4 +1,4 @@
-package org.kmebin.seminar28th
+package org.kmebin.seminar28th.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

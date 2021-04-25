@@ -1,4 +1,4 @@
-package org.kmebin.seminar28th
+package org.kmebin.seminar28th.ui
 
 import android.app.Activity
 import android.content.Intent
