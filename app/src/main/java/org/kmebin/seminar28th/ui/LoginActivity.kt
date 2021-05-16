@@ -8,30 +8,28 @@ import androidx.appcompat.app.AppCompatActivity
 import org.kmebin.seminar28th.api.ServiceCreator
 import org.kmebin.seminar28th.data.request.RequestLoginData
 import org.kmebin.seminar28th.data.response.ResponseLoginData
-import org.kmebin.seminar28th.databinding.ActivitySignInBinding
+import org.kmebin.seminar28th.databinding.ActivityLoginBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SignInActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySignInBinding
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivitySignInBinding.inflate(layoutInflater)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         configureNavigation()
-        logIn()
     }
 
     private fun configureNavigation() {
         binding.login.setOnClickListener {
             if (binding.id.text.isNotBlank() && binding.password.text.isNotBlank()) {
-                navigateHome()
-                Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
+                login()
             } else {
                 Toast.makeText(this, "아이디/비밀번호를 확인해주세요!", Toast.LENGTH_SHORT).show()
             }
@@ -43,12 +41,7 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
-    private fun navigateHome() {
-        val intent = Intent(this, HomeActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun logIn() {
+    private fun login() {
         val requestLoginData = RequestLoginData(
             id = binding.id.text.toString(), password = binding.password.text.toString()
         )
@@ -61,7 +54,7 @@ class SignInActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val data = response.body()?.data
                     Toast.makeText(
-                        this@SignInActivity,
+                        this@LoginActivity,
                         "${data?.nickname}님, 반갑습니다.",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -75,5 +68,10 @@ class SignInActivity : AppCompatActivity() {
                 Log.d("NetworkTest", "error:$t")
             }
         })
+    }
+
+    private fun navigateHome() {
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
     }
 }
