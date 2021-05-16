@@ -3,6 +3,7 @@
 
 * [Week1](#memo-Week1)
 * [Week2](#memo-Week2)
+* [Week4](#memo-Week4)
 
 </br>
 
@@ -94,3 +95,124 @@ class RepositoryListAdapter : RecyclerView.Adapter<RepositoryListAdapter.Reposit
     }
 }
 ```
+
+</br>
+
+## :memo: Week4
+:computer: ​**Level1**
+> Retrofit Interface
+```Kotlin
+interface SoptService {
+    @POST("/login/signin")
+    fun postLogin(
+        @Body body: RequestLoginData
+    ): Call<ResponseLoginData>
+
+    @POST("/login/signup")
+    fun postSignUp(
+        @Body body: RequestSignUpData
+    ): Call<ResponseSignUpData>
+}
+```
+
+</br>
+
+> Retrofit Interface Implementation
+```kotlin
+object ServiceCreator {
+    private const val BASE_URL = "http://cherishserver.com"
+
+    private val retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    val soptService: SoptService = retrofit.create(SoptService::class.java)
+}
+```
+
+</br>
+
+> Login
+```kotlin
+val requestLoginData = RequestLoginData(
+    id = binding.id.text.toString(), password = binding.password.text.toString()
+)
+val call: Call<ResponseLoginData> = ServiceCreator.soptService.postLogin(requestLoginData)
+call.enqueue(object : Callback<ResponseLoginData> {
+    override fun onResponse(
+        call: Call<ResponseLoginData>,
+        response: Response<ResponseLoginData>
+    ) {
+        if (response.isSuccessful) {
+            val data = response.body()?.data
+            Toast.makeText(
+                this@LoginActivity,
+                "${data?.nickname}님, 반갑습니다.",
+                Toast.LENGTH_SHORT
+            ).show()
+            navigateHome()
+        } else {
+
+        }
+    }
+
+    override fun onFailure(call: Call<ResponseLoginData>, t: Throwable) {
+        Log.d("NetworkTest", "error:$t")
+    }
+})
+```
+
+</br>
+
+> SignUp
+```kotlin
+val requestSignUpData = RequestSignUpData(
+    id = binding.id.text.toString(), password = binding.password.text.toString(),
+    sex = " ", nickname = binding.name.text.toString(), phone = " ", birth = " "
+)
+val call: Call<ResponseSignUpData> =
+    ServiceCreator.soptService.postSignUp(requestSignUpData)
+call.enqueue(object : Callback<ResponseSignUpData> {
+    override fun onResponse(
+        call: Call<ResponseSignUpData>,
+        response: Response<ResponseSignUpData>
+    ) {
+        if (response.isSuccessful) {
+            val data = response.body()?.data
+            Toast.makeText(
+                this@SignUpActivity,
+                "${data?.nickname}님, 환영합니다.",
+                Toast.LENGTH_SHORT
+            ).show()
+            navigateLogin()
+        } else {
+
+        }
+    }
+
+    override fun onFailure(call: Call<ResponseSignUpData>, t: Throwable) {
+        Log.d("NetworkTest", "error:$t")
+    }
+})
+```
+
+</br>
+
+> gif
+
+<img width="300" alt="gif" src="https://user-images.githubusercontent.com/72112845/118386835-36a21780-b655-11eb-9320-c2c21d8cb7f3.gif">
+
+</br>
+
+> PostMan Test
+
+<img width="600" alt="postman_signup" src="https://user-images.githubusercontent.com/72112845/118386751-a4017880-b654-11eb-9a1e-93d99bbc88b2.PNG">
+
+<img width="600" alt="postman_login" src="https://user-images.githubusercontent.com/72112845/118386757-bbd8fc80-b654-11eb-960a-54aadfc6fa8b.PNG">
+
+</br>
+
+> Review
+
+interface 구현체 네이밍을 단순히 'impl'과 같이 하는 것보다 해당 구현체가 어떤 역할을 하는지 바로 알 수 있게 네이밍하는 것이 더 좋은 것 같다.
